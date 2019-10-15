@@ -13,7 +13,7 @@ npm install
 npm start
 ```
 
-The result would be served on [localhost:3000](http://localhost:3000/data.json).
+The result will be served on [localhost:3000](http://localhost:3000/data.json).
 Don't stop the server because Task 2 need's it
 
 ## Task 2
