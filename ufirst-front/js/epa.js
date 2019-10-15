@@ -18,10 +18,13 @@ jQuery(document).ready(function() {
       },
       "sizes" : [] 
   };
+  let sizes = [];
 
-  let responseCode = 'responseCodeChart';
   let methodChart = 'methodChart';
-
+  let requestPerMinuteChart = 'requestsPerMinuteChart';
+  let responseCode = 'responseCodeChart';
+  let sizeChart = 'documentSizeChart';
+  
   $.getJSON('http://localhost:3000/data', function(data){
 
     epaDataRecords = data;
@@ -40,7 +43,7 @@ jQuery(document).ready(function() {
       switch(element.response_code){
           case '200': dataChart.responseCode.c200 ++;
             if(element.document_size < 1000){
-              dataChart.sizes.push(element.document_size);
+              sizes.push(element.document_size);
             }
           break;
           case '302': dataChart.responseCode.c302 ++;break;
@@ -53,8 +56,44 @@ jQuery(document).ready(function() {
 
     });
 
+    // Method Chart
+
+    new Chart(methodChart, {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: [dataChart.methods.gets, dataChart.methods.posts, dataChart.methods.heads],
+          backgroundColor: [
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(255, 99, 132, 0.2)'      
+          ]        
+        }],
+        labels: [
+          'GET',
+          'POST',
+          'HEAD'
+        ]
+      }
+    });
+
+    // Request Per Minute Chart
+
+    new Chart(requestPerMinuteChart, {
+      type: 'line',
+      data: [1,2,3,4],
+      options: {
+        elements: {
+            line: {
+                tension: 0 // disables bezier curves
+            }
+        }
+      }
+    });
+
+    // Response Code Chart
     new Chart(responseCode, {
-      type: 'horizontalBar',
+      type: 'polarArea',
       data: {
           labels: ['200', '302', '304', '403', '404', '500', '501'],
           datasets: [{
@@ -90,36 +129,39 @@ jQuery(document).ready(function() {
           }]
       },
       options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
+        scales: {
+            yAxes: [{
+                ticks: {
                       beginAtZero: false
-                  }
-              }]
-          }
+                }
+            }]
+        }
       }
     });
 
-    new Chart(methodChart, {
-      type: 'doughnut',
-      data: {
-        datasets: [{
-          data: [dataChart.methods.gets, dataChart.methods.posts, dataChart.methods.heads],
-          backgroundColor: [
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(255, 99, 132, 0.2)'      
-          ]        
-        }],
-        labels: [
-          'GET',
-          'POST',
-          'HEAD'
-        ]
+    // Document Size Chart
+
+    sizes.forEach(function(size, index){
+
+      if(typeof dataChart.sizes[size] !== 'undefined'){
+          dataChart.sizes[size] ++;
+      }else{
+        dataChart.sizes[size] = 0;
       }
     });
 
-    console.log(dataChart.sizes);
-
+    console.log(dataChart.si);
+    new Chart(sizeChart, {
+      type: 'scatter',
+      data: dataChart.sizes,
+      options: {
+        elements: {
+            line: {
+                tension: 1 // disables bezier curves
+            }
+        }
+      }
     });
+
+  });
 });
