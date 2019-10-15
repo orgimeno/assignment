@@ -1,0 +1,14 @@
+{
+  "name": "ufirst-front",
+  "version": "1.0.0",
+  "description": "fronted for ufrist assignment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Oscar Rodriguez",
+  "license": "ISC",
+  "dependencies": {
+    "chart.js": "^2.8.0"
+  }
+}
