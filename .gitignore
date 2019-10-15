@@ -1,4 +1,7 @@
 # Dependency modules
 
-ufirst-bk/node-modules
-ufirst-front/node-modules
+ufirst-bk/node-modules/
+
+ufirst-front/node_modules/
+
+data.json
